@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>dropbox animation</title>
+	<script type="text/javascript">
+		var source,
+			sources,
+			frameWidth = 820;
+		function runAnimation() {
+			sources = [].slice.call(document.getElementsByTagName('img'));
+			var screen = document.getElementById('screen');
+			updateSource(screen);
+			var t = setInterval(showAnimationFrame.bind(this, screen), 100);
+		}
+		function updateSource(screen) {
+			var sourcesMap = sources.map(function(i){return i.src;});
+			source = screen.style.backgroundImage
+				? sources[(sourcesMap.indexOf(source.src) + 1) % 2]
+				: sources[0];
+			screen.style.backgroundImage = "url(" + source.src + ")";
+		}
+		function showAnimationFrame(screen) {
+			var offset = Math.abs(parseInt(screen.style.backgroundPositionX || 0));
+			if ((offset += frameWidth) >= source.width) 
+				(offset = 0) || updateSource(screen);
+			screen.style.backgroundPositionX = -offset + "px";
+		}
+		document.addEventListener('DOMContentLoaded', runAnimation);
+	</script>
+</head>
+<body>
+	<div id="screen" style="width: 820px; height: 312px;"></div>
+	<div style="display: none;">
+		<img src="hero-intro-bg-vflMdtS9d.jpg" />
+		<img src="hero-loop-bg-vflsg8hml.jpg" />
+	</div>
+</body>
+</html>
