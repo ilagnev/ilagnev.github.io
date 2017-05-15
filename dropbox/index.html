@@ -3,29 +3,27 @@
 <head>
 	<title>dropbox animation</title>
 	<script type="text/javascript">
-		var source,
-			sources,
-			frameWidth = 820;
-		function runAnimation() {
-			sources = [].slice.call(document.getElementsByTagName('img'));
-			var screen = document.getElementById('screen');
+		document.addEventListener('DOMContentLoaded', function(){
+			var source,
+				frameWidth = 820,
+				sources = [].slice.call(document.getElementsByTagName('img')),
+				screen = document.getElementById('screen');
+			function updateSource(screen) {
+				var sourcesMap = sources.map(function(i){return i.src;});
+				source = screen.style.backgroundImage
+					? sources[(sourcesMap.indexOf(source.src) + 1) % 2]
+					: sources[0];
+				screen.style.backgroundImage = "url(" + source.src + ")";
+			}
+			function showAnimationFrame(screen) {
+				var offset = Math.abs(parseInt(screen.style.backgroundPositionX || 0));
+				if ((offset += frameWidth) >= source.width)
+					(offset = 0) || updateSource(screen);
+				screen.style.backgroundPositionX = -offset + "px";
+			}
 			updateSource(screen);
 			var t = setInterval(showAnimationFrame.bind(this, screen), 100);
-		}
-		function updateSource(screen) {
-			var sourcesMap = sources.map(function(i){return i.src;});
-			source = screen.style.backgroundImage
-				? sources[(sourcesMap.indexOf(source.src) + 1) % 2]
-				: sources[0];
-			screen.style.backgroundImage = "url(" + source.src + ")";
-		}
-		function showAnimationFrame(screen) {
-			var offset = Math.abs(parseInt(screen.style.backgroundPositionX || 0));
-			if ((offset += frameWidth) >= source.width) 
-				(offset = 0) || updateSource(screen);
-			screen.style.backgroundPositionX = -offset + "px";
-		}
-		document.addEventListener('DOMContentLoaded', runAnimation);
+		});
 	</script>
 </head>
 <body>
